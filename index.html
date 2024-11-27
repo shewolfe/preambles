@@ -1,0 +1,87 @@
+<html>
+
+<head>
+
+    <title>👣 PREAMBLES 🐾🐾</title>
+
+    <link rel="stylesheet" href="https://use.typekit.net/obx8ffs.css">
+
+    <style>
+        #text {
+            font-family: "futura-pt-condensed", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 2em;
+            width: 800px;
+            position: absolute;
+        }
+
+        #random {
+            cursor: pointer;
+        }
+
+        #dice {
+            width: 66px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div id="random" onclick="draw()"><img src="dice.png" id="dice" /></div>
+    <div id="text"></div>
+
+
+<script>
+
+    const deck = [
+        'walk toward an inanimate object that catches your eye.<br>find its sibling. find other members of its family.<br>find out how they got there, and find out why.',
+        'ask a friend to take you somewhere they love.<br>let them talk about it. ask them good questions.<br>now do the same for them. let them do the same for you.',
+        'with a question in mind,<br>draw one uninterrupted mark on a piece of paper.<br>go for a walk using your drawing as a map.<br>notice what is revealed to you.',
+        'choose a small public space.<br>place a shrine here to something you love.<br>return to it daily. leave offerings.<br>tend to the area around it.<br>notice if it changes.<br>notice if it changes you.',
+        'tell a secret to the sky.<br>wait for a response.<br>follow the instructions.',
+        'walk to the tallest object you can see.<br>turn left when you arrive.<br>walk to another tall object.<br>turn right when you arrive.<br>repeat, walk, turn, walk, turn, repeat.<br>walk until you have nowhere left to turn.',
+        'look for an animal.<br>what are they doing?<br>where are they going?<br>let their plans become your plans.',
+        'find a place to sit.<br>how still can you be?<br>for how long?<br>sit until you forget where you are.<br>sit until you become someone else.',
+        'look to the ground.<br>look for signs of life,<br>including your own.',
+        'consult the shadows.<br>watch them flicker, sharpen and smear, appear and disappear.<br>attune yourself to their world,<br>and learn to dance on the edges between the realms.',
+        'look for a plant.<br>look around them.<br>who are their friends and enemies?<br>return to them periodically.<br>what changes over time?<br>what remains?',
+        'as you walk, gather a handful of small objects.<br>at a clearing, ask a question into the sky.<br>gently toss your objects around you.<br>examine the resulting tableau for hidden messages.<br>thank the objects and return them to where you found them.',
+        'focus on your breath.<br>imagine the particles of air taking a walk through your body.<br>take your particles on a walk.<br>choose a place to release them.',
+        'scan for signals you usually ignore.<br>filter them to the foreground.<br>tune in to their music and stories.',
+        'retrace a route from a dream.<br>walk home on a different route.',
+        'cradle a worry in a soft bundle.<br>carry it tenderly.<br>show it flowers, fog, and other soft bundles.<br>weave it a gentle home in the landscape.',
+        'survey a route by smell.<br>keep a log of scents you encounter.<br>which ones are ephemeral, seasonal, persistent?<br>map your local topography of scent.',
+        'take the same walk in repetition over a stretch of time.<br>let the route wash over your ruts and grooves.<br>let it polish you smooth as a stone.',
+        'befriend a cloud.<br>follow it until you reach a different climate.',
+        'look for the seams where worlds converge.<br>what flows in between?',
+        'walk as if you are liquid.<br>how does the presence of others shape the way you move?<br>allow yourself to overflow the container.',
+        'go for a walk at the same time<br>as a friend in a different location.<br>give them directions for their walk.<br>let them give you directions for yours.<br>mail each other a memento from your respective walks.',
+        'write a story with a walk.<br>take turns adding lines, involving sightings on your path.<br>let the emergent story affect your route.<br>the resulting path will now be embedded with a narrative memory.',
+        'like a magnet, drift to where you are intuitively pulled.<br>then reverse your poles, and move in opposition to what draws you.',
+    ];
+
+    const r = (x, y) => Math.floor(Math.random() * (y - x) + x),
+		q = (e) => document.querySelector(e),
+		l = (a) => a.length,
+		bg = () => q("body").style.backgroundColor = `rgba(${r(0,255)},${r(0,255)},${r(0,255)},0.3)`
+        
+	const w = window.innerWidth, h = window.innerHeight;
+
+    const draw = () => {
+        let spell = q("#text");
+        
+        spell.style.left = `${r(6,50)}%`;
+        spell.style.top = `${r(6,75)}%`;
+        spell.innerHTML = deck[r(0,l(deck))];
+    }
+
+    draw();
+
+</script>
+
+</body>
+
+</html>
