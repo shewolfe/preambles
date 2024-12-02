@@ -152,6 +152,10 @@
         setTimeout(() => {
             print.style.opacity = 0;
         }, 1000);
+
+        setTimeout(() => {
+            print.remove();
+        }, 1000000);
     };
 
     const grow = (i) => {
@@ -170,6 +174,10 @@
         setTimeout(() => {
             plant.style.opacity = 0;
         }, 10000);
+
+        setTimeout(() => {
+            plant.remove();
+        }, 20000);
     };
 
     const draw = () => {
