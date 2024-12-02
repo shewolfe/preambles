@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="https://use.typekit.net/obx8ffs.css">
 
     <style>
-        #text {
+        #land {
+			width: 100vw;
+			height: 100vh;
+            overflow: hidden;
+        }
+
+        #lyric {
             font-family: "futura-pt-condensed", sans-serif;
             font-weight: 700;
             font-style: normal;
@@ -16,12 +22,18 @@
             position: absolute;
         }
 
-        #random {
+        #throw {
             cursor: pointer;
         }
 
         #dice {
             width: 66px;
+        }
+
+        .mark {
+            position: relative;
+            opacity: 0.5;
+            transition: opacity 12s linear;
         }
     </style>
 
@@ -30,8 +42,11 @@
 
 <body>
 
-    <div id="random" onclick="draw()"><img src="dice.png" id="dice" /></div>
-    <div id="text"></div>
+    <div id="throw" onclick="draw()"><img src="dice.png" id="dice" /></div>
+
+    <div id="land">
+    <div id="lyric"></div>
+    </div>
 
 
 <script>
@@ -68,17 +83,50 @@
 		l = (a) => a.length,
 		bg = () => q("body").style.backgroundColor = `rgba(${r(0,255)},${r(0,255)},${r(0,255)},0.3)`
         
-	const w = window.innerWidth, h = window.innerHeight;
+    const prints = ['🐾','🐾🐾'];
+
+    let n = 0;
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    let x = vw / 10;
+    let y = vh / 10;
+
+
+    const step = (i) => {
+        let print = document.createElement("span");
+        print.setAttribute("id", `span${i}`);
+        print.classList.add("mark");
+        print.innerHTML = prints[r(0,l(prints))];
+
+        const dx = (Math.random() - 0.5) * 50;
+        const dy = (Math.random() - 0.5) * 50;
+        x = Math.max(0, Math.min(x + dx, vw));
+        y = Math.max(0, Math.min(y + dy, vh));
+
+        print.style.left = `${x}px`;
+        print.style.top = `${y}px`;
+
+        q("#land").appendChild(print);
+
+        i++;
+
+        setTimeout(() => {
+            print.style.opacity = 0;
+        }, 1000);
+    };
 
     const draw = () => {
-        let spell = q("#text");
-        
+        let spell = q("#lyric");
         spell.style.left = `${r(6,50)}%`;
-        spell.style.top = `${r(6,75)}%`;
+        spell.style.top = `${r(6,60)}%`;
         spell.innerHTML = deck[r(0,l(deck))];
     }
 
     draw();
+
+    setInterval(step,1000,n);
 
 </script>
 
