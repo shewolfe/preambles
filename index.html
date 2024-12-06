@@ -1,16 +1,22 @@
-<html>
+<!doctype html>
 
+<html>
 <head>
 
+    <meta charset="utf-8">
     <title>👣 PREAMBLES 🐾🐾</title>
 
     <link rel="stylesheet" href="https://use.typekit.net/obx8ffs.css">
 
     <style>
+        body {
+            overflow: hidden;
+        }
+
         #land {
 			width: 100vw;
 			height: 100vh;
-            overflow: hidden;
+            z-index: 1;
         }
 
         #lyric {
@@ -33,10 +39,11 @@
             right: 15px;
         }
 
-        .print {
+        .paw {
             position: relative;
             opacity: 0.5;
             transition: opacity 12s linear;
+            /* border: 1px solid #00f; */
         }
 
         .plant {
@@ -44,7 +51,7 @@
             transition: opacity 30s linear;
         }
 
-        #info {
+        .overlay {
             display: flex;
 			align-items: center;
 			justify-content: center;
@@ -57,14 +64,19 @@
             opacity: 0.75;
             visibility: hidden;
             cursor: pointer;
+            z-index: 5;
         }
 
-        #info-text {
+        #info {
             font-family: "futura-pt-condensed", sans-serif;
             font-weight: 700;
             font-style: normal;
             font-size: 2em;
             width: 40%;
+        }
+
+        #info a {
+            color: #000;
         }
 
     </style>
@@ -81,14 +93,14 @@
     <div id="lyric"></div>
     </div>
 
-    <div id="info" onclick="info()">
-        <div id="info-text"><i>Preambles</i> is a set of poetic prompts and lyric games for walks. Perform them alone or with others, on physical and metaphysical planes, across worlds and dimensions. <i>Preambles</i> is brought to you by Helen Shewolfe Tseng.</div>
+    <div class="overlay" onclick="info()">
+        <div id="info"><i>Preambles</i> is a set of poetic prompts and lyric games for walks. Perform them alone or with others, on physical and metaphysical planes, across worlds and dimensions.<br/><br/><i>Preambles</i> is written, coded, and maintained by <a href="http://shewolfe.co">Helen Shewolfe Tseng</a>. A physical version of <i>Preambles</i> is available from <a href="https://bathers-library.square.site/product/preambles-by-helen-shewolfe-tseng/1?cp=true&sa=true&sbp=false&q=false">Bathers Library Artist Games</a>.</div>
     </div>
 
 
 <script>
 
-    const deck = [
+    const spells = [
         'walk toward an inanimate object that catches your eye.<br>find its sibling. find other members of its family.<br>find out how they got there, and find out why.',
         'ask a friend to take you somewhere they love.<br>let them talk about it. ask them good questions.<br>now do the same for them. let them do the same for you.',
         'with a question in mind,<br>draw one uninterrupted mark on a piece of paper.<br>go for a walk using your drawing as a map.<br>notice what is revealed to you.',
@@ -101,7 +113,7 @@
         'consult the shadows.<br>watch them flicker, sharpen and smear, appear and disappear.<br>attune yourself to their world,<br>and learn to dance on the edges between the realms.',
         'look for a plant.<br>look around them.<br>who are their friends and enemies?<br>return to them periodically.<br>what changes over time?<br>what remains?',
         'as you walk, gather a handful of small objects.<br>at a clearing, ask a question into the sky.<br>gently toss your objects around you.<br>examine the resulting tableau for hidden messages.<br>thank the objects and return them to where you found them.',
-        'focus on your breath.<br>imagine the particles of air taking a walk through your body.<br>take your particles on a walk.<br>choose a place to release them.',
+        'focus on your breath.<br>imagine the particles of air<br>taking a walk through your body.<br>take your particles on a walk.<br>choose a place to release them.',
         'scan for signals you usually ignore.<br>filter them to the foreground.<br>tune in to their music and stories.',
         'retrace a route from a dream.<br>walk home on a different route.',
         'cradle a worry in a soft bundle.<br>carry it tenderly.<br>show it flowers, fog, and other soft bundles.<br>weave it a gentle home in the landscape.',
@@ -109,52 +121,64 @@
         'take the same walk in repetition over a stretch of time.<br>let the route wash over your ruts and grooves.<br>let it polish you smooth as a stone.',
         'befriend a cloud.<br>follow it until you reach a different climate.',
         'look for the seams where worlds converge.<br>what flows in between?',
-        'walk as if you are liquid.<br>how does the presence of others shape the way you move?<br>allow yourself to overflow the container.',
+        'walk as if you are liquid.<br>how does the presence of others<br>shape the way you move?<br>allow yourself to overflow the container.',
         'go for a walk at the same time<br>as a friend in a different location.<br>give them directions for their walk.<br>let them give you directions for yours.<br>mail each other a memento from your respective walks.',
         'write a story with a walk.<br>take turns adding lines, involving sightings on your path.<br>let the emergent story affect your route.<br>the resulting path will now be embedded with a narrative memory.',
-        'like a magnet, drift to where you are intuitively pulled.<br>then reverse your poles, and move in opposition to what draws you.',
+        'like a magnet, drift to where<br>you are intuitively pulled.<br>then reverse your poles, and move<br>in opposition to what draws you.',
     ];
 
     const r = (x, y) => Math.floor(Math.random() * (y - x) + x),
+        rat = (x, y) => Math.random() * (y - x) + x,
 		q = (e) => document.querySelector(e),
 		l = (a) => a.length,
 		bg = () => q("body").style.backgroundColor = `rgba(${r(0,255)},${r(0,255)},${r(0,255)},0.3)`
         
-    const prints = ['🐾','🐾🐾'];
+    const paws = ['🐾','🐾🐾'];
     const plants = ['🌾','🌱','🌿','🌳','🌲'];
 
     let n = 0;
 
     const vw = window.innerWidth;
     const vh = window.innerHeight;
+    console.log('vw: ' + vw + ' / vh: ' + vh);
 
-    let x = vw / r(10,20);
-    let y = vh / r(2,8);
+    let pawx = 0;
+    let pawy = vh / rat(1.25,7.25);
+
 
     const step = (i) => {
-        let print = document.createElement("span");
-        print.setAttribute("id", `span${i}`);
-        print.classList.add("print");
-        print.innerHTML = prints[r(0,l(prints))];
+        let paw = document.createElement("span");
+        paw.setAttribute("id", `span${i}`);
+        paw.classList.add("paw");
+        paw.innerHTML = paws[r(0,l(paws))];
+
+        // console.log('x: ' + pawx + ' / y:' + pawy);
 
         const dx = (Math.random() - 0.5) * 50;
         const dy = (Math.random() - 0.5) * 50;
-        x = Math.max(0, Math.min(x + dx, vw));
-        y = Math.max(0, Math.min(y + dy, vh));
 
-        print.style.left = `${x}px`;
-        print.style.top = `${y}px`;
+        // console.log('dx: ' + dx + ' / dy:' + dy);
 
-        q("#land").appendChild(print);
+        pawx = Math.max(0, Math.min(pawx + dx, vw));
+        pawy = Math.max(0, Math.min(pawy + dy, vh));
+
+        // console.log('new x: ' + pawx + ' / new y:' + pawy);
+
+        paw.style.left = `${pawx}px`;
+        paw.style.top = `${pawy}px`;
+        paw.style.display = `inline-block`;
+        paw.style.transform = `rotate(${r(60,120)}deg)`;
+
+        q("#land").appendChild(paw);
 
         i++;
 
         setTimeout(() => {
-            print.style.opacity = 0;
+            paw.style.opacity = 0;
         }, 1000);
 
         setTimeout(() => {
-            print.remove();
+            paw.remove();
         }, 1000000);
     };
 
@@ -164,8 +188,8 @@
         plant.classList.add("plant");
         plant.innerHTML = plants[r(0,l(plants))];
 
-        plant.style.left = `${r(0,100)}%`;
-        plant.style.top = `${r(10,100)}%`;
+        plant.style.right = `${r(0,100)}%`;
+        plant.style.bottom = `${r(10,100)}%`;
 
         q("#land").appendChild(plant);
 
@@ -184,7 +208,7 @@
         let spell = q("#lyric");
         spell.style.left = `${r(15,45)}%`;
         spell.style.top = `${r(15,65)}%`;
-        spell.innerHTML = deck[r(0,l(deck))];
+        spell.innerHTML = spells[r(0,l(spells))];
     }
 
     draw();
@@ -196,11 +220,11 @@
 
     const info = () => {
         if (!infoVar) {
-            q("#info").style.visibility = "visible";
+            q(".overlay").style.visibility = "visible";
             infoVar = true;
             q("#lyric").style.filter = "blur(8px)";
         } else {
-            q("#info").style.visibility = "hidden";
+            q(".overlay").style.visibility = "hidden";
             infoVar = !infoVar;
             q("#lyric").style.filter = "blur(0)";
         }
@@ -209,5 +233,4 @@
 </script>
 
 </body>
-
 </html>
