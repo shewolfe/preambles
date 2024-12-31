@@ -140,7 +140,7 @@
 
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    console.log('vw: ' + vw + ' / vh: ' + vh);
+    // console.log('vw: ' + vw + ' / vh: ' + vh);
 
     let pawx = 0;
     let pawy = vh / rat(1.25,7.25);
@@ -151,17 +151,14 @@
         paw.setAttribute("id", `span${i}`);
         paw.classList.add("paw");
         paw.innerHTML = paws[r(0,l(paws))];
-
         // console.log('x: ' + pawx + ' / y:' + pawy);
 
         const dx = (Math.random() - 0.5) * 50;
         const dy = (Math.random() - 0.5) * 50;
-
         // console.log('dx: ' + dx + ' / dy:' + dy);
 
         pawx = Math.max(0, Math.min(pawx + dx, vw));
         pawy = Math.max(0, Math.min(pawy + dy, vh));
-
         // console.log('new x: ' + pawx + ' / new y:' + pawy);
 
         paw.style.left = `${pawx}px`;
@@ -204,11 +201,25 @@
         }, 60000);
     };
 
+    var prev = r(0,n);
+
+    const redraw = (n) => {
+        // console.log('prev: ' + prev);
+        curr = r(0,n);
+        if (curr != prev) {
+            prev = curr;
+            // console.log('curr: ' + curr);
+            return curr;
+        } else {
+            return redraw(n);
+        }
+    }
+
     const draw = () => {
         let spell = q("#lyric");
         spell.style.left = `${r(15,45)}%`;
         spell.style.top = `${r(15,65)}%`;
-        spell.innerHTML = spells[r(0,l(spells))];
+        spell.innerHTML = spells[redraw(l(spells))];
     }
 
     draw();
