@@ -46,7 +46,7 @@
             /* border: 1px solid #00f; */
         }
 
-        .plant {
+        .obj {
             position: absolute;
             transition: opacity 30s linear;
         }
@@ -134,7 +134,8 @@
 		bg = () => q("body").style.backgroundColor = `rgba(${r(0,255)},${r(0,255)},${r(0,255)},0.3)`
         
     const paws = ['🐾','🐾🐾'];
-    const plants = ['🌾','🌱','🌿','🌳','🌲'];
+    const plants = ['🌾','🌱','🌿','🌳','🌲','🌵','🌴','🍃'];
+    const things = ['🪵','🪨','🌼','🌻','🍄‍🟫','🍂']
 
     let n = 0;
 
@@ -179,25 +180,25 @@
         }, 1000000);
     };
 
-    const grow = (i) => {
-        let plant = document.createElement("span");
-        plant.setAttribute("id", `span${i}`);
-        plant.classList.add("plant");
-        plant.innerHTML = plants[r(0,l(plants))];
+    const grow = (i, array) => {
+        let obj = document.createElement("span");
+        obj.setAttribute("id", `span${i}`);
+        obj.classList.add("obj");
+        obj.innerHTML = array[r(0,l(array))];
 
-        plant.style.right = `${r(0,100)}%`;
-        plant.style.bottom = `${r(10,100)}%`;
+        obj.style.right = `${r(0,100)}%`;
+        obj.style.bottom = `${r(10,100)}%`;
 
-        q("#land").appendChild(plant);
+        q("#land").appendChild(obj);
 
         i++;
 
         setTimeout(() => {
-            plant.style.opacity = 0;
+            obj.style.opacity = 0;
         }, 10000);
 
         setTimeout(() => {
-            plant.remove();
+            obj.remove();
         }, 60000);
     };
 
@@ -225,7 +226,8 @@
     draw();
 
     setInterval(step, 1000, n);
-    setInterval(grow, 2000, n);
+    setInterval(grow, 2000, n, plants);
+    setInterval(grow, 13000, n, things);
 
     var infoVar = false;
 
